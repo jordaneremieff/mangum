@@ -449,18 +449,8 @@
 <p>All arguments are optional.</p>
 <h2 id="configuring-an-adapter-instance">Configuring an adapter instance</h2>
 <div class="autodoc">
-<div class="autodoc-signature"><em>class </em><code>mangum.adapter.<strong>Mangum</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">app</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">lifespan='auto'</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">api_gateway_base_path='/'</em><span class="autodoc-punctuation">)</span></div>
-<div class="autodoc-docstring"><p>Creates an adapter instance.</p>
-<ul>
-<li><strong>app</strong> - An asynchronous callable that conforms to version 3.0 of the ASGI
-specification. This will usually be an ASGI framework application instance.</li>
-<li><strong>lifespan</strong> - A string to configure lifespan support. Choices are <code>auto</code>, <code>on</code>,
-and <code>off</code>. Default is <code>auto</code>.</li>
-<li><strong>text_mime_types</strong> - A list of MIME types to include with the defaults that
-should not return a binary response in API Gateway.</li>
-<li><strong>api_gateway_base_path</strong> - A string specifying the part of the url path after
-which the server routing begins.</li>
-</ul></div>
+<div class="autodoc-signature"><em>class </em><code>mangum.adapter.<strong>Mangum</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">app</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">lifespan='auto'</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">api_gateway_base_path='/'</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">custom_handlers=None</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"></div>
 </div>
 <h2 id="creating-an-aws-lambda-handler">Creating an AWS Lambda handler</h2>
 <p>The adapter can be used to wrap any application without referencing the underlying methods. It defines a <code>__call__</code> method that allows the class instance to be used as an AWS Lambda event handler function. </p>

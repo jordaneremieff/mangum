@@ -558,10 +558,10 @@
 </ul>
 <p>Defaults to <code>auto</code>.</p>
 <h2 id="state-machine">State machine</h2>
-<p>The <code>LifespanCycle</code> is a state machine that handles ASGI <code>lifespan</code> events intended to run before and after HTTP and WebSocket requests are handled. </p>
+<p>The <code>LifespanCycle</code> is a state machine that handles ASGI <code>lifespan</code> events intended to run before and after HTTP requests are handled. </p>
 <h3 id="lifespancycle">LifespanCycle</h3>
 <div class="autodoc">
-<div class="autodoc-signature"><em>class </em><code>mangum.protocols.lifespan.<strong>LifespanCycle</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">app</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">lifespan</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">state=<LifespanCycleState.CONNECTING: 1></em><span class="autodoc-punctuation">, </span><em class="autodoc-param">exception=None</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-signature"><em>class </em><code>mangum.protocols.lifespan.<strong>LifespanCycle</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">app</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">lifespan</em><span class="autodoc-punctuation">)</span></div>
 <div class="autodoc-docstring"><p>Manages the application cycle for an ASGI <code>lifespan</code> connection.</p>
 <ul>
 <li><strong>app</strong> - An asynchronous callable that conforms to version 3.0 of the ASGI
@@ -587,13 +587,13 @@ shutdown flow.</li>
 <div class="autodoc-signature"><code><strong>send</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">message</em><span class="autodoc-punctuation">)</span></div>
 <div class="autodoc-docstring"><p>Awaited by the application to send ASGI <code>lifespan</code> events.</p></div>
 <div class="autodoc-signature"><code><strong>startup</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">)</span></div>
-<div class="autodoc-docstring"><p>Pushes the <code>lifespan</code> startup event to application queue and handles errors.</p></div>
+<div class="autodoc-docstring"><p>Pushes the <code>lifespan</code> startup event to the queue and handles errors.</p></div>
 <div class="autodoc-signature"><code><strong>shutdown</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">)</span></div>
-<div class="autodoc-docstring"><p>Pushes the <code>lifespan</code> shutdown event to application queue and handles errors.</p></div>
+<div class="autodoc-docstring"><p>Pushes the <code>lifespan</code> shutdown event to the queue and handles errors.</p></div>
 </div>
 </div>
 <h4 id="context-manager">Context manager</h4>
-<p>Unlike the <code>HTTPCycle</code> and <code>WebSocketCycle</code> classes, the <code>LifespanCycle</code> is also used as a context manager in the adapter class. If lifespan support is turned off, then the application never enters the lifespan cycle context.</p>
+<p>Unlike the <code>HTTPCycle</code> class, the <code>LifespanCycle</code> is also used as a context manager in the adapter class. If lifespan support is turned off, then the application never enters the lifespan cycle context.</p>
 <div class="codehilite"><pre><span></span><code> <span class="k">with</span> <span class="n">ExitStack</span><span class="p">()</span> <span class="k">as</span> <span class="n">stack</span><span class="p">:</span>
     <span class="c1"># Ignore lifespan events entirely if the `lifespan` setting is `off`.</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifespan</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="s2">&quot;on&quot;</span><span class="p">):</span>

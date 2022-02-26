@@ -547,41 +547,30 @@
 <p>The <code>HTTPCycle</code> is used by the adapter to communicate message events between the application and AWS. It is a state machine that handles the entire ASGI request and response cycle.</p>
 <h3 id="httpcycle">HTTPCycle</h3>
 <div class="autodoc">
-<div class="autodoc-signature"><em>class </em><code>mangum.protocols.http.<strong>HTTPCycle</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">request</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">state=<HTTPCycleState.REQUEST: 1></em><span class="autodoc-punctuation">, </span><em class="autodoc-param">response=None</em><span class="autodoc-punctuation">)</span></div>
-<div class="autodoc-docstring"><p>Manages the application cycle for an ASGI <code>http</code> connection.</p>
-<ul>
-<li><strong>request</strong> - A request object containing the event and context for the connection
-scope used to run the ASGI application instance.</li>
-<li><strong>state</strong> - An enumerated <code>HTTPCycleState</code> type that indicates the state of the
-ASGI connection.</li>
-<li><strong>app_queue</strong> - An asyncio queue (FIFO) containing messages to be received by the
-application.</li>
-<li><strong>response</strong> - A dictionary containing the response data to return in AWS Lambda.</li>
-</ul></div>
+<div class="autodoc-signature"><em>class </em><code>mangum.protocols.http.<strong>HTTPCycle</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">scope</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">body</em><span class="autodoc-punctuation">)</span></div>
+<div class="autodoc-docstring"></div>
 <div class="autodoc-members">
 <div class="autodoc-signature"><code><strong>run</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">app</em><span class="autodoc-punctuation">)</span></div>
-<div class="autodoc-docstring"><p>Calls the application with the <code>http</code> connection scope.</p></div>
+<div class="autodoc-docstring"></div>
 <div class="autodoc-signature"><code><strong>receive</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">)</span></div>
-<div class="autodoc-docstring"><p>Awaited by the application to receive ASGI <code>http</code> events.</p></div>
+<div class="autodoc-docstring"></div>
 <div class="autodoc-signature"><code><strong>send</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">self</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">message</em><span class="autodoc-punctuation">)</span></div>
-<div class="autodoc-docstring"><p>Awaited by the application to send ASGI <code>http</code> events.</p></div>
+<div class="autodoc-docstring"></div>
 </div>
 </div>
 <h3 id="httpcyclestate">HTTPCycleState</h3>
 <div class="autodoc">
 <div class="autodoc-signature"><em>class </em><code>mangum.protocols.http.<strong>HTTPCycleState</strong></code><span class="autodoc-punctuation">(</span><em class="autodoc-param">value</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">names=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">*</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">module=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">qualname=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">type=None</em><span class="autodoc-punctuation">, </span><em class="autodoc-param">start=1</em><span class="autodoc-punctuation">)</span></div>
-<div class="autodoc-docstring"><p>The state of the ASGI <code>http</code> connection.</p>
-<ul>
-<li><strong>REQUEST</strong> - Initial state. The ASGI application instance will be run with the
-connection scope containing the <code>http</code> type.</li>
-<li><strong>RESPONSE</strong> - The <code>http.response.start</code> event has been sent by the application.
+<div class="autodoc-docstring"><p>The state of the ASGI <code>http</code> connection.
+* <strong>REQUEST</strong> - Initial state. The ASGI application instance will be run with the
+connection scope containing the <code>http</code> type.
+* <strong>RESPONSE</strong> - The <code>http.response.start</code> event has been sent by the application.
 The next expected message is the <code>http.response.body</code> event, containing the body
 content. An application may pass the <code>more_body</code> argument to send content in chunks,
-however content will always be returned in a single response, never streamed.</li>
-<li><strong>COMPLETE</strong> - The body content from the ASGI application has been completely
+however content will always be returned in a single response, never streamed.
+* <strong>COMPLETE</strong> - The body content from the ASGI application has been completely
 read. A disconnect event will be sent to the application, and the response will
-be returned.</li>
-</ul></div>
+be returned.</p></div>
 </div>
 
               

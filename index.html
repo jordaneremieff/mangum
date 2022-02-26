@@ -458,12 +458,12 @@
     <img src="https://travis-ci.org/jordaneremieff/mangum.svg?branch=master" alt="Build Status">
 </a>
 <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/mangum.svg?style=flat-square"></p>
-<p>Mangum is an adapter for using <a href="https://asgi.readthedocs.io/en/latest/">ASGI</a> applications with AWS Lambda &amp; API Gateway. It is intended to provide an easy-to-use, configurable wrapper for any ASGI application deployed in an AWS Lambda function to handle API Gateway requests and responses.</p>
+<p>Mangum is an adapter for running <a href="https://asgi.readthedocs.io/en/latest/">ASGI</a> applications in AWS Lambda to handle API Gateway, ALB, and Lambda@Edge events.</p>
 <p><strong><em>Documentation</em></strong>: https://mangum.io/</p>
 <h2 id="features">Features</h2>
 <ul>
 <li>
-<p>API Gateway support for <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api.html">HTTP</a> and <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-rest-api.html">REST</a> APIs.</p>
+<p>Event handlers for API Gateway <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api.html">HTTP</a> and <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-rest-api.html">REST</a> APIs, <a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/lambda-functions.html">Application Load Balancer</a>, and <a href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-edge.html">CloudFront Lambda@Edge</a>.</p>
 </li>
 <li>
 <p>Compatibility with ASGI application frameworks, such as <a href="https://www.starlette.io/">Starlette</a>, <a href="https://fastapi.tiangolo.com/">FastAPI</a>, and <a href="https://pgjones.gitlab.io/quart/">Quart</a>. </p>
@@ -479,7 +479,7 @@
 </li>
 </ul>
 <h2 id="requirements">Requirements</h2>
-<p>Python 3.6+</p>
+<p>Python 3.7+</p>
 <h2 id="installation">Installation</h2>
 <div class="codehilite"><pre><span></span><code>pip install mangum
 </code></pre></div>
@@ -501,7 +501,7 @@
 <span class="n">handler</span> <span class="o">=</span> <span class="n">Mangum</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 </code></pre></div>
 
-<p>Or using a framework.</p>
+<p>Or using a framework:</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span> <span class="nn">mangum</span> <span class="kn">import</span> <span class="n">Mangum</span>
 
