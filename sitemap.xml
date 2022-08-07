@@ -2,37 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>http://mangum.io/</loc>
-         <lastmod>2022-04-25</lastmod>
+         <lastmod>2022-08-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://mangum.io/adapter/</loc>
-         <lastmod>2022-04-25</lastmod>
+         <lastmod>2022-08-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://mangum.io/asgi-frameworks/</loc>
-         <lastmod>2022-04-25</lastmod>
+         <lastmod>2022-08-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://mangum.io/contributing/</loc>
-         <lastmod>2022-04-25</lastmod>
+         <lastmod>2022-08-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://mangum.io/external-links/</loc>
-         <lastmod>2022-04-25</lastmod>
+         <lastmod>2022-08-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://mangum.io/http/</loc>
-         <lastmod>2022-04-25</lastmod>
+         <lastmod>2022-08-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://mangum.io/lifespan/</loc>
-         <lastmod>2022-04-25</lastmod>
+         <lastmod>2022-08-07</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
