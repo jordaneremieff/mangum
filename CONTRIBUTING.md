@@ -35,7 +35,7 @@ Then add the upstream remote to keep the forked repo in sync with the original.
 
 ```shell
 cd mangum
-git remote add upstream git://github.com/jordaneremieff/mangum.git
+git remote add upstream https://github.com/jordaneremieff/mangum.git
 git fetch upstream
 ```
 

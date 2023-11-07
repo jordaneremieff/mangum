@@ -82,3 +82,131 @@ def hello(request: Request):
 
 handler = Mangum(app)
 ```
+
+## Creating a custom event handler
+
+`mangum` has native support only for events coming from the following services:
+* API Gateway
+* HTTP Gateway
+* ALB
+* Lambda At The Edge
+
+If you wish your ASGI app to handle events triggered by other AWS services, for example a SQS message, you'll need to create your own handler.
+
+A handler must implement the `LambdaHandler` [protocol](https://peps.python.org/pep-0544/) and process the expected event message structure. Check out the [AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html) for what that might look like for different services that interact with AWS Lambda.
+
+Let's take a simple endpoint as an example: we want to trigger a POST request to a `/message` route whenever we get a message from SQS.
+
+Let's define our custom Lambda handler in a separate file `lambda_handlers.py`.
+
+```python
+import json
+
+from mangum.handlers.utils import (
+    handle_base64_response_body,
+    handle_exclude_headers,
+    handle_multi_value_headers,
+    maybe_encode_body,
+)
+from mangum.types import LambdaConfig, LambdaContext, LambdaEvent, Response, Scope
+
+
+class MyCustomHandler:
+    """This handler is responsible for reading and processing SQS events
+    that have triggered the Lambda function.
+    """
+
+    def __init__(self, event: LambdaEvent, context: LambdaContext, config: LambdaConfig) -> None:
+        self.event = event
+        self.context = context
+        self.config = config
+
+    @classmethod
+    def infer(cls, event: LambdaEvent, context: LambdaContext, config: LambdaConfig) -> bool:
+        """How to distinguish SQS events from other AWS Lambda triggers"""
+
+        return (
+            "Records" in event 
+            and len(event["Records"]) > 0 
+            and event["Records"][0]["eventSource"] == "aws:sqs"
+        )
+
+    @property
+    def body(self) -> bytes:
+        """The body of the actual REST request we want to send after getting the event."""
+
+        message_body = self.event["Records"][0]["body"]
+        request_body = json.dumps({"data": message_body, "service": "sqs"})
+
+        return maybe_encode_body(request_body, is_base64=False)
+
+    @property
+    def scope(self) -> Scope:
+        """A mapping of expected keys that Mangum adapter uses under the hood"""
+
+        headers = [{"Content-Type": "application/json"}]
+        scope: Scope = {
+            "type": "http",
+            "http_version": "1.1",
+            "method": "POST",
+            "headers": [[k.encode(), v.encode()] for k, v in headers.items()],
+            "scheme": "https",
+            "path": "/message",
+            "query_string": "",
+            "raw_path": None,
+            "root_path": "",
+            "server": ("mangum", 80),
+            "client": ("", 0),
+            "asgi": {"version": "3.0", "spec_version": "2.0"},
+            "aws.event": self.event,
+            "aws.context": self.context,
+        }
+        return scope
+
+    def __call__(self, response: Response) -> dict:
+        finalized_headers, multi_value_headers = handle_multi_value_headers(response["headers"])
+        finalized_body, is_base64_encoded = handle_base64_response_body(
+            response["body"], finalized_headers, self.config["text_mime_types"]
+        )
+
+        return {
+            "statusCode": response["status"],
+            "headers": handle_exclude_headers(finalized_headers, self.config),
+            "multiValueHeaders": handle_exclude_headers(multi_value_headers, self.config),
+            "body": finalized_body,
+            "isBase64Encoded": is_base64_encoded,
+        }
+```
+
+Finally, add the custom handler to your adapter via the `custom_handlers` argument.
+
+```python
+from mangum import Mangum
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+from .lambda_handlers import MyCustomHandler
+
+
+app = FastAPI()
+
+
+class InputModel(BaseModel):
+    data: str
+    service: str
+
+
+@app.post("/message")
+def read_message(input_data: InputModel):
+    return {
+        "message": input_data.data,
+        "service": input_data.service,
+    }
+
+
+handler = Mangum(app, custom_handlers=[MyCustomHandler])
+```
+
+It's also worth noting that custom handlers take precedence over in-built handlers, and the order in the list matters.
+
+This means that if there are multiple handlers for the same service, the first one in the list wins. 
