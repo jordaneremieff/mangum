@@ -21,6 +21,11 @@ def get_server_and_port(headers: dict) -> Tuple[str, int]:
         server_port = headers.get("x-forwarded-port", 80)
     else:
         server_name, server_port = server_name.split(":")  # pragma: no cover
+
+    # If passing through additional proxies, can be comma-separated ports, so take the first
+    if "," in server_port:
+        server_port = server_port.split(",")[0]
+
     server = (server_name, int(server_port))
 
     return server
