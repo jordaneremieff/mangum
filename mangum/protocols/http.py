@@ -93,7 +93,6 @@ class HTTPCycle:
             self.state is HTTPCycleState.RESPONSE
             and message["type"] == "http.response.body"
         ):
-
             body = message.get("body", b"")
             more_body = message.get("more_body", False)
             self.buffer.write(body)

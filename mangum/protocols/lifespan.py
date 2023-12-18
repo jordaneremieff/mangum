@@ -98,14 +98,12 @@ class LifespanCycle:
     async def receive(self) -> Message:
         """Awaited by the application to receive ASGI `lifespan` events."""
         if self.state is LifespanCycleState.CONNECTING:
-
             # Connection established. The next event returned by the queue will be
             # `lifespan.startup` to inform the application that the connection is
             # ready to receive lfiespan messages.
             self.state = LifespanCycleState.STARTUP
 
         elif self.state is LifespanCycleState.STARTUP:
-
             # Connection shutting down. The next event returned by the queue will be
             # `lifespan.shutdown` to inform the application that the connection is now
             # closing so that it may perform cleanup.

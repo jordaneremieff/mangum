@@ -104,7 +104,6 @@ class ALB:
 
     @property
     def scope(self) -> Scope:
-
         headers = transform_headers(self.event)
         list_headers = [list(x) for x in headers]
         # Unique headers. If there are duplicates, it will use the last defined.

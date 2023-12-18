@@ -199,7 +199,7 @@ def test_aws_http_gateway_scope_basic_v1():
         example_event, example_context, {"api_gateway_base_path": "/"}
     )
 
-    assert type(handler.body) == bytes
+    assert type(handler.body) is bytes
     assert handler.scope == {
         "asgi": {"version": "3.0", "spec_version": "2.0"},
         "aws.context": {},
@@ -308,7 +308,7 @@ def test_aws_http_gateway_scope_basic_v2():
         example_event, example_context, {"api_gateway_base_path": "/"}
     )
 
-    assert type(handler.body) == bytes
+    assert type(handler.body) is bytes
     assert handler.scope == {
         "asgi": {"version": "3.0", "spec_version": "2.0"},
         "aws.context": {},
