@@ -1,10 +1,4 @@
-from mangum.types import (
-    Scope,
-    Headers,
-    LambdaConfig,
-    LambdaContext,
-    LambdaEvent,
-)
+from mangum.types import Headers, LambdaConfig, LambdaContext, LambdaEvent, Scope
 
 
 class CustomHandler:

@@ -1,20 +1,19 @@
 import logging
-from itertools import chain
 from contextlib import ExitStack
+from itertools import chain
 from typing import List, Optional, Type
 
-from mangum.protocols import HTTPCycle, LifespanCycle
-from mangum.handlers import ALB, HTTPGateway, APIGateway, LambdaAtEdge
 from mangum.exceptions import ConfigurationError
+from mangum.handlers import ALB, APIGateway, HTTPGateway, LambdaAtEdge
+from mangum.protocols import LifespanCycle
 from mangum.types import (
     ASGI,
-    LifespanMode,
     LambdaConfig,
-    LambdaEvent,
     LambdaContext,
+    LambdaEvent,
     LambdaHandler,
+    LifespanMode,
 )
-
 
 logger = logging.getLogger("mangum")
 
@@ -65,6 +64,7 @@ class Mangum:
         for handler_cls in chain(self.custom_handlers, HANDLERS):
             if handler_cls.infer(event, context, self.config):
                 return handler_cls(event, context, self.config)
+
         raise RuntimeError(  # pragma: no cover
             "The adapter was unable to infer a handler to use for the event. This "
             "is likely related to how the Lambda function was invoked. (Are you "
@@ -79,9 +79,9 @@ class Mangum:
                 lifespan_cycle = LifespanCycle(self.app, self.lifespan)
                 stack.enter_context(lifespan_cycle)
 
-            http_cycle = HTTPCycle(handler.scope, handler.body)
-            http_response = http_cycle(self.app)
+            cycle = handler.cycle_cls(handler.scope, handler.body)
+            response = cycle(self.app)
 
-            return handler(http_response)
+            return handler(response)
 
         assert False, "unreachable"  # pragma: no cover

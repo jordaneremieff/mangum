@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Type
 
 from mangum.handlers.utils import (
     handle_base64_response_body,
@@ -6,7 +6,15 @@ from mangum.handlers.utils import (
     handle_multi_value_headers,
     maybe_encode_body,
 )
-from mangum.types import Scope, Response, LambdaConfig, LambdaEvent, LambdaContext
+from mangum.protocols import HTTPCycle
+from mangum.types import (
+    Cycle,
+    LambdaConfig,
+    LambdaContext,
+    LambdaEvent,
+    Response,
+    Scope,
+)
 
 
 class LambdaAtEdge:
@@ -30,6 +38,10 @@ class LambdaAtEdge:
         self.event = event
         self.context = context
         self.config = config
+
+    @property
+    def cycle_cls(self) -> Type[Cycle]:
+        return HTTPCycle
 
     @property
     def body(self) -> bytes:

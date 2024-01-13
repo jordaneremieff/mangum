@@ -1,4 +1,4 @@
 from .http import HTTPCycle
-from .lifespan import LifespanCycleState, LifespanCycle
+from .lifespan import LifespanCycle, LifespanCycleState
 
 __all__ = ["HTTPCycle", "LifespanCycleState", "LifespanCycle"]

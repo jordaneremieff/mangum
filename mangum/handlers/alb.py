@@ -1,6 +1,6 @@
 from itertools import islice
-from typing import Dict, Generator, List, Tuple
-from urllib.parse import urlencode, unquote, unquote_plus
+from typing import Dict, Generator, List, Tuple, Type
+from urllib.parse import unquote, unquote_plus, urlencode
 
 from mangum.handlers.utils import (
     get_server_and_port,
@@ -8,13 +8,15 @@ from mangum.handlers.utils import (
     handle_exclude_headers,
     maybe_encode_body,
 )
+from mangum.protocols import HTTPCycle
 from mangum.types import (
+    Cycle,
+    LambdaConfig,
+    LambdaContext,
+    LambdaEvent,
+    QueryParams,
     Response,
     Scope,
-    LambdaConfig,
-    LambdaEvent,
-    LambdaContext,
-    QueryParams,
 )
 
 
@@ -96,6 +98,10 @@ class ALB:
         self.config = config
 
     @property
+    def cycle_cls(self) -> Type[Cycle]:
+        return HTTPCycle
+
+    @property
     def body(self) -> bytes:
         return maybe_encode_body(
             self.event.get("body", b""),
@@ -104,7 +110,6 @@ class ALB:
 
     @property
     def scope(self) -> Scope:
-
         headers = transform_headers(self.event)
         list_headers = [list(x) for x in headers]
         # Unique headers. If there are duplicates, it will use the last defined.

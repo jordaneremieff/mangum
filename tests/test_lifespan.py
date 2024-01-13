@@ -1,14 +1,12 @@
 import logging
 
 import pytest
-
+from quart import Quart
 from starlette.applications import Starlette
 from starlette.responses import PlainTextResponse
 
 from mangum import Mangum
 from mangum.exceptions import LifespanFailure
-
-from quart import Quart
 
 
 @pytest.mark.parametrize(
